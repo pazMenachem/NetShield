@@ -1,5 +1,4 @@
 const { user: userClient } = require("../config/grpcConfig");
-const logger = require("../utils/logger");
 
 class UserService {
     getUserDetails(email) {
@@ -9,6 +8,29 @@ class UserService {
             });
         });
     }
+    getUsers() {
+        return new Promise((resolve, reject) => {
+            userClient.getAllUsers({}, (error, response) => {
+                error ? reject(error) : resolve(response);
+            })
+        });
+    }
+
+    createUser(email) {
+        return new Promise((resolve, reject) => {
+            userClient.createDeleteUser({ user_email: email, is_creating: true }, (error, response) => {
+                error ? reject(error) : resolve(response);
+            })
+        });
+    };
+
+    deleteUser(email) {
+        return new Promise((resolve, reject) => {
+            userClient.createDeleteUser({ user_email: email, is_creating: false }, (error, response) => {
+                error ? reject(error) : resolve(response);
+            })
+        });
+    }
 }
 
-module.exports = new UserService(); 
+module.exports = new UserService();
