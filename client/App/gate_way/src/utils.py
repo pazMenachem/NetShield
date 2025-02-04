@@ -1,4 +1,4 @@
-# Codes
+# Pipe Codes
 ADD_BLOCKED_DOMAIN    = 200
 REMOVE_BLOCKED_DOMAIN = 201
 UPDATE_ADULT_ADS      = 202
@@ -12,3 +12,5 @@ SETTINGS = "settings"
 DOMAINS  = "domains"
 ADULT_BLOCK = "adult_block"
 ADS_BLOCK = "ads_block"
+STATUS   = "status"
+SUCCESS  = "success"

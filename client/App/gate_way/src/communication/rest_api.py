@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
-from blocker_communicator import BlockerCommunicator
+from communication.pipe_communicator import BlockerCommunicator
 from utils import *
 import json
 import uvicorn
@@ -10,6 +10,8 @@ UPDATE_ADULT_ADS_ROUTE = "/update_adult_ads"
 INIT_BLOCKER_ROUTE     = "/init_blocker"
 ADD_DOMAIN_ROUTE       = "/add_domain"
 REMOVE_DOMAIN_ROUTE    = "/remove_domain"
+
+DEFAULT_PORT = 8000
 
 class RemoveDomainRequest(BaseModel):
     domain: str
@@ -26,20 +28,20 @@ class InitBlockerRequest(BaseModel):
     ads_block: bool
     domains: list[str]
 
-class RestCommunicator:
+class RestAPI:
     def __init__(self):
         self._blocker_communicator = BlockerCommunicator()
         self._app = FastAPI()
-        self._logger = setup_logger("RestCommunicator")
+        self._logger = setup_logger(__name__)
 
         self._setup()
 
-    def start(self):
+    def start(self, port: int = DEFAULT_PORT):
         try:
-            uvicorn.run(self._app, host="0.0.0.0", port=8000)
-            self._logger.info("RestCommunicator started")
+            uvicorn.run(self._app, host="0.0.0.0", port=port)
+            self._logger.info("RestAPI started")
         except Exception as e:
-            self._logger.error(f"RestCommunicator error: {e}")
+            self._logger.error(f"RestAPI error: {e}")
             raise e
     
     def _setup(self):
@@ -59,6 +61,7 @@ class RestCommunicator:
                 DOMAINS: request.domain
             }
         }))
+        return {STATUS: SUCCESS}
 
     async def _handle_remove_domain_request(self, request: RemoveDomainRequest):
         self._blocker_communicator.send_message(json.dumps({
@@ -67,7 +70,7 @@ class RestCommunicator:
                 DOMAINS: request.domain
             }
         }))
-
+        return {STATUS: SUCCESS}
     async def _handle_update_adult_ads_request(self, request: UpdateAdultAdsRequest):
         self._blocker_communicator.send_message(json.dumps({
             CODE: UPDATE_ADULT_ADS,
@@ -76,7 +79,7 @@ class RestCommunicator:
                 ADS_BLOCK: request.ads_block
             }
         }))
-    
+        return {STATUS: SUCCESS}
     async def _handle_init_blocker_request(self, request: InitBlockerRequest):
         self._blocker_communicator.send_message(json.dumps({
             CODE: INIT_BLOCKER,
@@ -86,3 +89,4 @@ class RestCommunicator:
                 DOMAINS: request.domains
             }
         }))
+        return {STATUS: SUCCESS}

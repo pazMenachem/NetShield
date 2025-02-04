@@ -4,7 +4,7 @@ import win32service
 import win32event
 import servicemanager
 import logging
-from src.rest_communicator import RestCommunicator
+from communication.rest_api import RestAPI
 import time
 import json
 from src.utils import *
@@ -48,8 +48,8 @@ from src.utils import *
 #         except Exception as e:
 #             logging.error(f"Cleanup error: {str(e)}")
 def run():
-    rest_communicator = RestCommunicator()
-    rest_communicator.start()
+    rest_api = RestAPI()
+    rest_api.start()
 
 def main():
     try:
