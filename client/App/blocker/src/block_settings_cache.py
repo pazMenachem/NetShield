@@ -5,7 +5,7 @@ import netifaces
 
 # DNS servers
 AD_GUARD        = "94.140.14.14"   # For ads block
-AD_GUARD_FAMILY = "94.140.14.0/24" # For ads/Adult block
+AD_GUARD_FAMILY = "94.140.14.15" # For ads/Adult block
 CLOUD_FLARE     = "1.1.1.3"        # For adult block
 
 class BlockSettingsCache:
@@ -17,7 +17,7 @@ class BlockSettingsCache:
         self._lock               = Lock()
         self._gateway_ip         = self._get_default_gateway()
         self._current_dns_server = self._gateway_ip
-        self._logger             = setup_logger("BlockSettingsCache")
+        self._logger             = setup_logger(name=__name__)
         self._dns_server_map     = {
             (True, False): CLOUD_FLARE,     # Adult only
             (False, True): AD_GUARD,        # Ads only

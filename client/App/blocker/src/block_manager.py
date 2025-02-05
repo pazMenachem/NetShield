@@ -9,7 +9,7 @@ from src.utils import *
 
 class BlockManager:
     def __init__(self):
-        self._block_settings_cache = BlockSettingsCache()
+        self._block_settings_cache   = BlockSettingsCache()
         self._communicator           = Communicator(DEFAULT_PIPE_NAME)
         self._handler_factory        = HandlerFactory()
         self._logger                 = setup_logger("BlockManager")
@@ -93,6 +93,7 @@ class BlockManager:
         If Domain is blocked, modify the packet to return 0.0.0.0
         """
         self._check_for_blocked_domain(packet)
+        self._logger.info(f"Putting source address to: {self._block_settings_cache.get_gateway_ip()}")
         packet.src_addr = self._block_settings_cache.get_gateway_ip()
     
     def _outbound_packet_handler(self, packet: pydivert.Packet):

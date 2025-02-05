@@ -4,7 +4,7 @@ import win32service
 import win32event
 import servicemanager
 import logging
-from communication.rest_api import RestAPI
+from src.communication.rest_api import RestAPI
 import time
 import json
 from src.utils import *

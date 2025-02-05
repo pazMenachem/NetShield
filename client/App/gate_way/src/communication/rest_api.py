@@ -1,10 +1,10 @@
 from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
-from communication.pipe_communicator import BlockerCommunicator
-from utils import *
+from .pipe_communicator import PipeCommunicator
+from ..utils import *
 import json
 import uvicorn
-from logger import setup_logger
+from ..logger import setup_logger
 
 UPDATE_ADULT_ADS_ROUTE = "/update_adult_ads"
 INIT_BLOCKER_ROUTE     = "/init_blocker"
@@ -14,10 +14,10 @@ REMOVE_DOMAIN_ROUTE    = "/remove_domain"
 DEFAULT_PORT = 8000
 
 class RemoveDomainRequest(BaseModel):
-    domain: str
+    domains: str
 
 class AddDomainRequest(BaseModel):
-    domain: str
+    domains: str
 
 class UpdateAdultAdsRequest(BaseModel):
     adult_block: bool
@@ -29,17 +29,18 @@ class InitBlockerRequest(BaseModel):
     domains: list[str]
 
 class RestAPI:
-    def __init__(self):
-        self._blocker_communicator = BlockerCommunicator()
+    def __init__(self, port: int = DEFAULT_PORT):
+        self._blocker_communicator = PipeCommunicator()
         self._app = FastAPI()
         self._logger = setup_logger(__name__)
+        self._port = port
 
         self._setup()
 
-    def start(self, port: int = DEFAULT_PORT):
+    def start(self):
         try:
-            uvicorn.run(self._app, host="0.0.0.0", port=port)
             self._logger.info("RestAPI started")
+            uvicorn.run(self._app, host="0.0.0.0", port=self._port)
         except Exception as e:
             self._logger.error(f"RestAPI error: {e}")
             raise e
@@ -57,36 +58,28 @@ class RestAPI:
     async def _handle_add_domain_request(self, request: AddDomainRequest):
         self._blocker_communicator.send_message(json.dumps({
             CODE: ADD_BLOCKED_DOMAIN,
-            DATA: {
-                DOMAINS: request.domain
-            }
+            DOMAINS: request.domains
         }))
         return {STATUS: SUCCESS}
 
     async def _handle_remove_domain_request(self, request: RemoveDomainRequest):
         self._blocker_communicator.send_message(json.dumps({
             CODE: REMOVE_BLOCKED_DOMAIN,
-            DATA: {
-                DOMAINS: request.domain
-            }
+            DOMAINS: request.domains
         }))
         return {STATUS: SUCCESS}
     async def _handle_update_adult_ads_request(self, request: UpdateAdultAdsRequest):
         self._blocker_communicator.send_message(json.dumps({
             CODE: UPDATE_ADULT_ADS,
-            DATA: {
-                ADULT_BLOCK: request.adult_block,
-                ADS_BLOCK: request.ads_block
-            }
+            ADULT_BLOCK: request.adult_block,
+            ADS_BLOCK: request.ads_block
         }))
         return {STATUS: SUCCESS}
     async def _handle_init_blocker_request(self, request: InitBlockerRequest):
         self._blocker_communicator.send_message(json.dumps({
             CODE: INIT_BLOCKER,
-            DATA: {
-                ADULT_BLOCK: request.adult_block,
-                ADS_BLOCK: request.ads_block,
-                DOMAINS: request.domains
-            }
+            ADULT_BLOCK: request.adult_block,
+            ADS_BLOCK: request.ads_block,
+            DOMAINS: request.domains
         }))
         return {STATUS: SUCCESS}

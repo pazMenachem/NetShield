@@ -7,6 +7,7 @@ class RestCommunicator:
     def __init__(self, url: str) -> None:
         self.logger = setup_logger(__name__)
         self._url = url
+
         self._actions = {
             ADD_DOMAIN_ROUTE: self.add_domain,
             REMOVE_DOMAIN_ROUTE: self.remove_domain,

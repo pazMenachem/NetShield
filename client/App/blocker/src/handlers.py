@@ -12,7 +12,7 @@ class IHandler(ABC):
     
     def __init__(self, block_settings_cache: BlockSettingsCache) -> None:
         self._block_settings_cache = block_settings_cache
-        self._logger = setup_logger(name="Handler")
+        self._logger = setup_logger(name=__name__)
 
     @abstractmethod
     def handle_request(self) -> None:
@@ -100,7 +100,7 @@ class HandlerFactory:
         Returns:
             IHandler: The handler for the given code.
         """
-        
+        self._logger.info(f"Processing request: {data}")
         code = data[CODE]
         handler_class = self._handlers.get(code)
         self._logger.info(f"Processing request: {handler_class}")

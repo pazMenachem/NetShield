@@ -6,7 +6,7 @@ import logging
 DEFAULT_PIPE_NAME = "blocker_pipe"
 DEFAULT_BYTES_TO_READ = 70000
 
-class BlockerCommunicator:
+class PipeCommunicator:
     """
     A class that communicates with the blocker using windows named pipes.
 
