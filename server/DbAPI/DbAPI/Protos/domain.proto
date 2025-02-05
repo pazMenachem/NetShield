@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option csharp_namespace = "DbAPI.Protos";
+
+package Domain;
+
+service DomainService {
+  rpc BlockRemoveDomain (BlockRemoveDomainRequest) returns (BlockRemoveDomainResponse);
+}
+
+// ********** Requests Messages **********
+
+message BlockRemoveDomainRequest {
+  string user_email = 1;
+  string domain = 2;
+  bool to_add = 3; // true for add, false for delete
+}
+
+// ********** Responses Messages **********
+
+message BlockRemoveDomainResponse {
+  string domain = 1;
+}
+
+message GetBlockedDomainsResponse {
+  repeated string domains = 1;
+}

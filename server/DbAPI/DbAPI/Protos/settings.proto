@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option csharp_namespace = "DbAPI.Protos";
+
+package Settings;
+
+service SettingsService {
+  rpc UpdateSettings (UpdateSettingsRequest) returns (UpdateSettingsResponse);
+}
+
+// ********** Requests Messages **********
+
+message UpdateSettingsRequest {
+  string user_email = 1;
+  bool ad_blocked = 2;
+  bool adult_content_blocked = 3;
+}
+
+// ********** Responses Messages **********
+
+message UpdateSettingsResponse {
+}
+
+message UserSettingsResponse {
+  bool ad_blocked = 1;
+  bool adult_content_blocked = 2;
+} 
