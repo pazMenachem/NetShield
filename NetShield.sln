@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "server", "server", "{2215E626-4679-4B7A-8D22-334074A8F55F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataBase", "server\DataBase\DataBase.csproj", "{C432F170-F937-4602-B44B-81942172930C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C432F170-F937-4602-B44B-81942172930C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C432F170-F937-4602-B44B-81942172930C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C432F170-F937-4602-B44B-81942172930C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C432F170-F937-4602-B44B-81942172930C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C432F170-F937-4602-B44B-81942172930C} = {2215E626-4679-4B7A-8D22-334074A8F55F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {979846F6-F2E4-4D8E-8A8D-7DB532EEC81B}
+	EndGlobalSection
+EndGlobal
