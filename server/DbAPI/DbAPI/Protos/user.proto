@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+option csharp_namespace = "DbAPI.Protos";
+
+import "settings.proto";
+import "domain.proto";
+
+package User;
+
+service UserService {
+  rpc CreateDeleteUser (CreateDeleteUserRequest) returns (UserDataResponse);
+  rpc GetUser (GetUserDataRequest) returns (UserDataResponse);
+  rpc GetAllUsers (GetAllUsersRequest) returns (GetAllUsersResponse);
+}
+
+// ********** Requests Messages **********
+
+message GetAllUsersRequest {
+}
+
+message CreateDeleteUserRequest {
+  string user_email = 1;
+  bool is_creating = 2; // true for create, false for delete
+}
+
+message GetUserDataRequest {
+    string user_email = 1;
+}
+
+// ********** Responses Messages **********
+
+message UserDataResponse {
+  string user_email = 1;
+  string user_id = 2;
+  Settings.UserSettingsResponse settings = 3;
+  repeated string blocked_domains = 4;
+}
+
+message GetAllUsersResponse {
+  repeated UserDataResponse users = 1;
+}
+
